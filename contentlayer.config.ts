@@ -77,6 +77,45 @@ function createTagCount(allBlogs) {
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount))
 }
 
+/**
+ * Count the occurrences of all categories across blog posts and write to json file
+ */
+function createCategoryCount(allBlogs) {
+  const catgCount: Record<string, number> = {}
+  const catgRel: Record<string, string[]> = {}
+
+  allBlogs.forEach((file) => {
+    if (file.categories && (!isProduction || file.draft !== true)) {
+      // Count the occurrences of each category
+      file.categories.forEach((catg) => {
+        const formattedCatg = slug(catg)
+        if (formattedCatg in catgCount) {
+          catgCount[formattedCatg] += 1
+        } else {
+          catgCount[formattedCatg] = 1
+        }
+      })
+      // Create a relationship between city and district
+      const city = file.categories[0]
+      const dist = file.categories[1]
+      if (city in catgRel) {
+        if (!catgRel[city].includes(dist)) {
+          catgRel[city].push(dist)
+        }
+      } else {
+        catgRel[city] = [dist]
+      }
+    }
+  })
+  writeFileSync(
+    './app/category-data.json',
+    JSON.stringify({
+      catgCount,
+      catgRel,
+    })
+  )
+}
+
 function createSearchIndex(allBlogs) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
@@ -178,6 +217,7 @@ export default makeSource({
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
     createTagCount(allBlogs)
+    createCategoryCount(allBlogs)
     createSearchIndex(allBlogs)
   },
 })
