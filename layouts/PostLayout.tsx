@@ -9,10 +9,6 @@ import Category from '@/components/Category'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
-
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   year: 'numeric',
@@ -30,8 +26,7 @@ interface LayoutProps {
 
 function generateTocNumbering(toc) {
   const numbering = [] as number[]
-  
-  const result = toc.map((item, index) => {
+  const result = toc.map((item) => {
     const depth = item.depth
     if (numbering.length < depth) {
       numbering.push(1)
