@@ -31,7 +31,7 @@ export const generateStaticParams = async () => {
   const catgCounts = catgData.catgCount as Record<string, number>
   const catgKeys = Object.keys(catgCounts)
   const paths = catgKeys.map((catg) => ({
-    catg: encodeURI(catg),
+    category: encodeURI(catg),
   }))
   return paths
 }
