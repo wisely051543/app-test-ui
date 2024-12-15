@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect } from 'react'
 import Leaflet from 'leaflet'
 import * as ReactLeaflet from 'react-leaflet'
@@ -22,6 +20,10 @@ const DynamicMap = ({ children, className, width, height, ...rest }) => {
       })
     })()
   }, [])
+
+  if (typeof window === 'undefined') {
+    return <p />
+  }
 
   return (
     <MapContainer {...rest} style={{ width: '100%', height: '100%' }}>
