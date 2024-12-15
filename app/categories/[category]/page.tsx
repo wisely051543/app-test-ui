@@ -43,7 +43,8 @@ export default function CatgPage({ params }: { params: { category: string } }) {
   const filteredPosts = allCoreContent(
     sortPosts(
       allBlogs.filter(
-        (post) => post.categories && post.categories.map((t) => slug(t)).includes(catgory)
+        (post) =>
+          post.categories && post.categories.map((t) => encodeURI(slug(t))).includes(catgory)
       )
     )
   )
