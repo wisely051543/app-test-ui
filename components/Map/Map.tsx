@@ -3,6 +3,11 @@ import Leaflet from 'leaflet'
 import * as ReactLeaflet from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
+delete Leaflet.Icon.Default.prototype._getIconUrl
 
 const { MapContainer } = ReactLeaflet
 
@@ -14,9 +19,9 @@ const DynamicMap = ({ children, className, width, height, ...rest }) => {
     ;(async function init() {
       delete Leaflet.Icon.Default.prototype._getIconUrl
       Leaflet.Icon.Default.mergeOptions({
-        iconRetinaUrl: '/leaflet/images/marker-icon-2x.png',
-        iconUrl: '/leaflet/images/marker-icon.png',
-        shadowUrl: '/leaflet/images/marker-shadow.png',
+        iconRetinaUrl: markerIcon2x.src,
+        iconUrl: markerIcon.src,
+        shadowUrl: markerShadow.src,
       })
     })()
   }, [])
