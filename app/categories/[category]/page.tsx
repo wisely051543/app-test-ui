@@ -31,21 +31,18 @@ export const generateStaticParams = async () => {
   const catgCounts = catgData.catgCount as Record<string, number>
   const catgKeys = Object.keys(catgCounts)
   const paths = catgKeys.map((catg) => ({
-    category: encodeURI(catg),
+    category: decodeURI(catg),
   }))
   return paths
 }
 
-export default function CatgPage({ params }: { params: { category: string } }) {
+export default function Page({ params }: { params: { category: string } }) {
   const catgory = decodeURI(params.category)
   // Capitalize first letter and convert space to dash
   const title = catgory[0].toUpperCase() + catgory.split(' ').join('-').slice(1)
   const filteredPosts = allCoreContent(
     sortPosts(
-      allBlogs.filter(
-        (post) =>
-          post.categories && post.categories.map((t) => encodeURI(slug(t))).includes(catgory)
-      )
+      allBlogs.filter((post) => post.categories && post.categories.map((t) => t).includes(catgory))
     )
   )
   if (filteredPosts.length === 0) {
